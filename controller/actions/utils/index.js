@@ -2,12 +2,13 @@
 const { db } = require('../../../controller/index')
 
 
-const database = await db('ToDo');
+
 
 
 const getToDos = async () => {
 
     try {
+        const database = await db('ToDo');
         const getToDos = await database.collection("todolist").find().toArray();
         console.log('---- GET RESULT TODO LIST----', getToDos)
         return {
