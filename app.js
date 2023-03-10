@@ -11,6 +11,9 @@ const Init = (event, context) => {
   const controller = urlSegments[3];
   const action = urlSegments[4];
 
+  console.log('---- ENTITY ----', entity)
+  console.log('---- CONTROLLER ----', controller)
+  console.log('---- ACTION ----', action)
   const start = async () => {
     if (!entity) {
       return MainController.apiResponder(404, "Entity not found");
