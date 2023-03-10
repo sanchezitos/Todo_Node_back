@@ -28,6 +28,6 @@ const getToDos = async () => {
 
 }
 
-modules.exports = {
+module.exports = {
     getToDos
 }
