@@ -27,7 +27,7 @@ const Init = (event, context) => {
       return MainController.apiResponder(404, "Action not found");
     }
 
-    const entityController = require(`./entities/${entity}/${controller}`);
+    const entityController = require(`./entities/${entity}.js`)[controller];
     if (!entityController[action]) {
       return MainController.apiResponder(404, "Missing action property");
     }
