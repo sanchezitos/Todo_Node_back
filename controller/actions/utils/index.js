@@ -51,7 +51,7 @@ const getToDoByName = async (name) => {
         }
     }
 }
-const addtodo = async (todo) => {
+const addToDo = async (todo) => {
     try {
         const database = await db('ToDo');
         const existingTodo = await getToDoByName(todo.name);
@@ -80,11 +80,43 @@ const addtodo = async (todo) => {
         }
     }
 }
+const deleteToDo = async (name) => {
+    try {
+      const database = await db('ToDo');
+      const existingTodo = await getToDoByName(name);
+  
+      if (!existingTodo.success) {
+        return {
+          success: false,
+          status: 404,
+          msg: "To Do not found"
+        }
+      }
+  
+      const result = await database.collection("todolist").deleteOne({ Name: name });
+      console.log('---- DELETE RESULT TODO----', result)
+  
+      return {
+        success: true,
+        status: 200,
+        data: result.deletedCount
+      }
+    } catch (error) {
+      console.log('---ERROR DELETE TO DO----', error)
+      return {
+        success: false,
+        status: 400,
+        msg: "Error deleting To Do"
+      }
+    }
+  }
+  
 
 
 
 module.exports = {
     getToDos,
     getToDoByName,
-    addtodo
+    addToDo,
+    deleteToDo
 }

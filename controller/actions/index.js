@@ -40,11 +40,21 @@ module.exports = {
     body.creationDate = new Date();
     body.Name = name
 
-    return await utils.addtodo(body);
+    return await utils.addToDo(body);
   },
   deletetodo: async (event) => {
 
-    return "Delete todo :)";
+    const body = JSON.parse(event.body);
+    const name = body?.name;
+
+    if (!name) {
+      return {
+        success: false,
+        status: 400,
+        msg: "Missing name parameter"
+      };
+    }
+    return await utils.deleteToDo(name);
   },
   updatetodo: async (event, context, { MainController, constants }) => {
 
