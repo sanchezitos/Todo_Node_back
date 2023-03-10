@@ -117,25 +117,27 @@ const updateToDo = async (updatedTodo) => {
         if (updatedTodo.name) {
             const todoByName = await getToDoByName(updatedTodo.name);
             if (todoByName.success) {
+                const result = await database.collection("todolist").updateOne(
+                    { name: updatedTodo.name },
+                    { $set: updatedTodo }
+                );
+                console.log('---- UPDATE RESULT TODO----', result);
+
+                return {
+                    success: true,
+                    status: 200,
+                    data: id
+                }
+            } else {
                 return {
                     success: false,
                     status: 400,
-                    msg: "To Do with same name already exists"
+                    msg: "To do not found"
                 }
             }
         }
 
-        const result = await database.collection("todolist").updateOne(
-            { name: updatedTodo.name },
-            { $set: updatedTodo }
-        );
-        console.log('---- UPDATE RESULT TODO----', result);
 
-        return {
-            success: true,
-            status: 200,
-            data: id
-        }
     } catch (error) {
         console.log('---ERROR UPDATE TO DO----', error)
         return {
