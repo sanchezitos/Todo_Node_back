@@ -1,0 +1,23 @@
+{
+  "name": "back-todo-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm install && tar.exe -a -c -f bundle.zip .",
+    "build": "npm install && zip -r bundle.zip ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.10",
+    "crypto-js": "^4.1.1",
+    "node-fetch": "^2.6.1",
+    "request": "^2.88.2",
+    "form-data": "^4.0.0",
+    "fs": "^0.0.1-security",
+    "moment": "^2.29.1",
+    "mongodb": "^3.6.6"
+  }
+}
