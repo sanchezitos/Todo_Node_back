@@ -26,7 +26,7 @@ const getToDos = async () => {
 const getToDoByName = async (name) => {
     try {
         const database = await db('ToDo');
-        const getToDo = await database.collection("todolist").findOne({ Name: name });
+        const getToDo = await database.collection("todolist").findOne({ name: name });
         console.log('---- GET RESULT TODO BY NAME----', getToDo);
 
         if (getToDo) {
@@ -82,35 +82,70 @@ const addToDo = async (todo) => {
 }
 const deleteToDo = async (name) => {
     try {
-      const database = await db('ToDo');
-      const existingTodo = await getToDoByName(name);
-  
-      if (!existingTodo.success) {
-        return {
-          success: false,
-          status: 404,
-          msg: "To Do not found"
+        const database = await db('ToDo');
+        const existingTodo = await getToDoByName(name);
+
+        if (!existingTodo.success) {
+            return {
+                success: false,
+                status: 404,
+                msg: "To Do not found"
+            }
         }
-      }
-  
-      const result = await database.collection("todolist").deleteOne({ Name: name });
-      console.log('---- DELETE RESULT TODO----', result)
-  
-      return {
-        success: true,
-        status: 200,
-        data: result.deletedCount
-      }
+
+        const result = await database.collection("todolist").deleteOne({ name: name });
+        console.log('---- DELETE RESULT TODO----', result)
+
+        return {
+            success: true,
+            status: 200,
+            data: result.deletedCount
+        }
     } catch (error) {
-      console.log('---ERROR DELETE TO DO----', error)
-      return {
-        success: false,
-        status: 400,
-        msg: "Error deleting To Do"
-      }
+        console.log('---ERROR DELETE TO DO----', error)
+        return {
+            success: false,
+            status: 400,
+            msg: "Error deleting To Do"
+        }
     }
-  }
-  
+}
+const updateToDo = async (updatedTodo) => {
+    try {
+        const database = await db('ToDo');
+
+        if (updatedTodo.name) {
+            const todoByName = await getToDoByName(updatedTodo.name);
+            if (todoByName.success) {
+                return {
+                    success: false,
+                    status: 400,
+                    msg: "To Do with same name already exists"
+                }
+            }
+        }
+
+        const result = await database.collection("todolist").updateOne(
+            { name: updatedTodo.name },
+            { $set: updatedTodo }
+        );
+        console.log('---- UPDATE RESULT TODO----', result);
+
+        return {
+            success: true,
+            status: 200,
+            data: id
+        }
+    } catch (error) {
+        console.log('---ERROR UPDATE TO DO----', error)
+        return {
+            success: false,
+            status: 400,
+            msg: "Error updating To Do"
+        }
+    }
+}
+
 
 
 
@@ -118,5 +153,6 @@ module.exports = {
     getToDos,
     getToDoByName,
     addToDo,
-    deleteToDo
+    deleteToDo,
+    updateToDo
 }

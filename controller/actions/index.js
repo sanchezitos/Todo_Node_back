@@ -38,7 +38,6 @@ module.exports = {
       };
     }
     body.creationDate = new Date();
-    body.Name = name
 
     return await utils.addToDo(body);
   },
@@ -58,6 +57,16 @@ module.exports = {
   },
   updatetodo: async (event, context, { MainController, constants }) => {
 
-    return "update todo :)";
+    const body = JSON.parse(event.body);
+    const name = body?.name;
+
+    if (!name) {
+      return {
+        success: false,
+        status: 400,
+        msg: "Missing name parameter"
+      };
+    }
+    return await utils.updateToDo(body);
   },
 };
