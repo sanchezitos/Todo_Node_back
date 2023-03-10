@@ -26,7 +26,7 @@ const getToDos = async () => {
 const getToDoByName = async (name) => {
     try {
         const database = await db('ToDo');
-        const getToDo = await database.collection("todolist").findOne({ name: name });
+        const getToDo = await database.collection("todolist").findOne({ Name: name });
         console.log('---- GET RESULT TODO BY NAME----', getToDo);
 
         if (getToDo) {
