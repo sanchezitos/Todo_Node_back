@@ -27,8 +27,19 @@ module.exports = {
 
   },
   addtodo: async (event, context, { MainController, constants }) => {
+    const body = JSON.parse(event.body);
+    const name = body?.name;
 
-    return "add todo :)";
+    if (!name) {
+      return {
+        success: false,
+        status: 400,
+        msg: "Missing name parameter"
+      };
+    }
+    body.creationDate = new Date();
+
+    return await utils.addtodo(body);
   },
   deletetodo: async (event) => {
 

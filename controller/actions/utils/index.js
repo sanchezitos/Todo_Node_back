@@ -51,10 +51,40 @@ const getToDoByName = async (name) => {
         }
     }
 }
+const addtodo = async (todo) => {
+    try {
+        const database = await db('ToDo');
+        const existingTodo = await getToDoByName(todo.name);
+        if (existingTodo.success) {
+            return {
+                success: false,
+                status: 400,
+                msg: "To Do with same name already exists"
+            }
+        }
+
+        const result = await database.collection("todolist").insertOne(todo);
+        console.log('---- ADD RESULT TODO----', result)
+
+        return {
+            success: true,
+            status: 200,
+            data: result.insertedId
+        }
+    } catch (error) {
+        console.log('---ERROR ADD TO DO----', error)
+        return {
+            success: false,
+            status: 400,
+            msg: "Error adding To Do"
+        }
+    }
+}
 
 
 
 module.exports = {
     getToDos,
-    getToDoByName
+    getToDoByName,
+    addtodo
 }
