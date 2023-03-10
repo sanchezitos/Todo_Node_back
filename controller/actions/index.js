@@ -1,16 +1,30 @@
 const utils = require("./utils");
 
 module.exports = {
-  test: async (event, context, { MainController, constants }) => {
+
+  // Retorna un string de prueba
+  test: async () => {
     return "Test de TODO NODE :)";
   },
+  // Retorna la lista de todos obtenidos de la DB
   gettodos: async () => {
-    /* let body = JSON.parse(event.body) */
+
     return await utils.getToDos();
   },
-  gettodobytype: async (event, context, { MainController, constants }) => {
+  gettodobyname: async (event, context, { MainController, constants }) => {
+    const body = JSON.parse(event.body);
+    const name = body?.name;
 
-    return "get todo by type";
+    if (!name) {
+      return {
+        success: false,
+        status: 400,
+        msg: "Missing name parameter"
+      };
+    }
+
+    return await utils.getToDoByName(name);
+
   },
   addtodo: async (event, context, { MainController, constants }) => {
 

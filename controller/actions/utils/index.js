@@ -1,10 +1,6 @@
 
 const { db } = require('../../../controller/index')
 
-
-
-
-
 const getToDos = async () => {
 
     try {
@@ -27,7 +23,38 @@ const getToDos = async () => {
 
 
 }
+const getToDoByName = async (name) => {
+    try {
+        const database = await db('ToDo');
+        const getToDo = await database.collection("todolist").findOne({ name: name });
+        console.log('---- GET RESULT TODO BY NAME----', getToDo);
+
+        if (getToDo) {
+            return {
+                success: true,
+                status: 200,
+                data: getToDo
+            }
+        } else {
+            return {
+                success: false,
+                status: 404,
+                msg: "To Do not found"
+            }
+        }
+    } catch (error) {
+        console.log('---ERROR GET TO DO BY NAME----', error)
+        return {
+            success: false,
+            status: 400,
+            msg: "Error get To Do by name"
+        }
+    }
+}
+
+
 
 module.exports = {
-    getToDos
+    getToDos,
+    getToDoByName
 }
