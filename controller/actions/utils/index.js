@@ -126,7 +126,7 @@ const updateToDo = async (updatedTodo) => {
                 return {
                     success: true,
                     status: 200,
-                    data: id
+                    data: result
                 }
             } else {
                 return {
