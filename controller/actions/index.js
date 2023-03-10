@@ -38,6 +38,7 @@ module.exports = {
       };
     }
     body.creationDate = new Date();
+    body.Name = name
 
     return await utils.addtodo(body);
   },
