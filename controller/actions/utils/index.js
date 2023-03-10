@@ -53,7 +53,7 @@ const getToDoByName = async (name) => {
 }
 const addToDo = async (todo) => {
     try {
-        const database = await db('ToDo');
+
         const existingTodo = await getToDoByName(todo.name);
         if (existingTodo.success) {
             return {
@@ -62,7 +62,7 @@ const addToDo = async (todo) => {
                 msg: "To Do with same name already exists"
             }
         }
-
+        const database = await db('ToDo');
         const result = await database.collection("todolist").insertOne(todo);
         console.log('---- ADD RESULT TODO----', result)
 
@@ -82,7 +82,7 @@ const addToDo = async (todo) => {
 }
 const deleteToDo = async (name) => {
     try {
-        const database = await db('ToDo');
+
         const existingTodo = await getToDoByName(name);
 
         if (!existingTodo.success) {
@@ -92,7 +92,7 @@ const deleteToDo = async (name) => {
                 msg: "To Do not found"
             }
         }
-
+        const database = await db('ToDo');
         const result = await database.collection("todolist").deleteOne({ name: name });
         console.log('---- DELETE RESULT TODO----', result)
 
@@ -112,11 +112,13 @@ const deleteToDo = async (name) => {
 }
 const updateToDo = async (updatedTodo) => {
     try {
-        const database = await db('ToDo');
+
 
         if (updatedTodo.name) {
             const todoByName = await getToDoByName(updatedTodo.name);
             if (todoByName.success) {
+                const database = await db('ToDo');
+                updatedTodo.lastUpdateDate = new Date()
                 const result = await database.collection("todolist").updateOne(
                     { name: updatedTodo.name },
                     { $set: updatedTodo }
